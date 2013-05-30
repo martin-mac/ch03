@@ -153,9 +153,10 @@ public static function getEmployer($individualID) {
   public static function getAllEntitiesAsObjects() {   
     $sql = "SELECT \"entityid\", \"type\" from \"entity\"";
     $res = pg_query(DataManager::_getConnection(), $sql);
-    #$res2 = pg_fetch_all($res);
+
     $firephp = FirePHP::getInstance(true);
-    $firephp->log($this);  
+    $firephp->log($this);
+    
     if(!$res) {
       die("Failed getting all entities");
     }
