@@ -9,8 +9,8 @@ function println($data) {
 $arContacts = DataManager::getAllEntitiesAsObjects();
 
 foreach($arContacts as $objEntity) {
-#$firephp = FirePHP::getInstance(true);
-#$firephp->log($objEntity); 
+$firephp = FirePHP::getInstance(true);
+$firephp->log($objEntity); 
   if(get_class($objEntity) == 'Individual') {
     #print "<h1>Individual - {$objEntity->__toString()}</h1>";
     print "<h1>Individual - {$objEntity}</h1>";

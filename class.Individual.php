@@ -13,8 +13,8 @@ class Individual extends Entity {
   }
 
   public function __toString() {
-  	echo "__toString Ind";
-    return $this->firstname . ' ' . $this->lastname;
+  	 echo "__toString Ind";
+  	 return $this->firstname . ' ' . $this->lastname;
   }
 
   public function getEmployer() {
