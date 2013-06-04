@@ -51,6 +51,7 @@ class DataManager {
   public static function getEntityData($entityID) {
     $sql = "SELECT * FROM \"entity\" WHERE \"entityid\" = $entityID";
     $res = pg_query(DataManager::_getConnection(),$sql);
+
     if(! ($res && pg_num_rows($res))) {
       die("Failed getting entity $entityID");
     }
@@ -85,8 +86,8 @@ public static function getAddressObjectsForEntity($entityID) {
 
     if(pg_num_rows($res)) {
       $objs = array();
-      while($rec = pg_fetch_assoc($res)) {
-        $objs[] = new Email($rec['emailid']);
+      while($rec = pg_fetch_assoc($res)) {     	
+        $objs[] = new Email($rec['emailid']);       
       }
       return $objs;
     } else {
@@ -153,9 +154,6 @@ public static function getEmployer($individualID) {
   public static function getAllEntitiesAsObjects() {   
     $sql = "SELECT \"entityid\", \"type\" from \"entity\"";
     $res = pg_query(DataManager::_getConnection(), $sql);
-
-    $firephp = FirePHP::getInstance(true);
-    $firephp->log($this);
     
     if(!$res) {
       die("Failed getting all entities");
@@ -163,7 +161,7 @@ public static function getEmployer($individualID) {
 
     if(pg_num_rows($res)) {
       $objs = array();
-      while($row = pg_fetch_assoc($res)) {
+      while($row = pg_fetch_assoc($res)) {	
         if($row['type'] == 'I') {
           $objs[] = new Individual($row['entityid']);
         } elseif ($row['type'] == 'O') {

@@ -19,6 +19,7 @@ require_once('interface.Validator.php');
     }
 
     public function __get($propertyName) {
+    	echo "__get";
         if(!array_key_exists($propertyName, $this->propertyTable)) {
             throw new Exception("Invalid property \"$propertyName\"! ");
         }
@@ -31,6 +32,7 @@ require_once('interface.Validator.php');
     }
 
     public function __set($propertyName, $value) {
+    	echo "__set";
         if(!array_key_exists($propertyName, $this->propertyTable)) {
             throw new Exception("Invalid property \"$propertyName\"!");
         }

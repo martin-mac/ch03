@@ -11,6 +11,7 @@ class Organization extends Entity {
   }
 
   public function __toString() {
+  	 echo "__toString Org";
     return $this->name;
   }
 

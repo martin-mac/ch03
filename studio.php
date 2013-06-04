@@ -1,33 +1,34 @@
 <?php
-class Foo
-{
-    public static $my_static = 'foo';
-
-    public function staticValue() {
-        return self::$my_static;
-    }
+require_once('FirePHP.class.php');
+/*
+$firephp = FirePHP::getInstance(true);
+$firephp->log(); 
+*/
+abstract class Singleton {
+ 
+    protected static $_instance = NULL;
+ 
+    /**
+      * Prevent direct object creation
+      */
+     final private function  __construct() { }
+ 
+    /**
+      * Prevent object cloning
+      */
+     final private function  __clone() { }
+ 
+    /**
+      * Returns new or existing Singleton instance
+      * @return Singleton
+      */
+     final public static function getInstance(){
+         if(null !== static::$_instance){
+             return static::$_instance;
+         }
+         static::$_instance = new static();
+         return static::$_instance;
+     }
+     
 }
-
-class Bar extends Foo
-{
-    public function fooStatic() {
-        return parent::$my_static;
-    }
-}
-
-
-print Foo::$my_static . "<br />";
-
-$foo = new Foo();
-print $foo->staticValue() . "<br />";
-exit();
-print $foo->my_static . "<br />";      // Undefined "Property" my_static 
-
-print $foo::$my_static . "<br />";
-$classname = 'Foo';
-print $classname::$my_static . "<br />"; // As of PHP 5.3.0
-
-print Bar::$my_static . "<br />";
-$bar = new Bar();
-print $bar->fooStatic() . "<br />";
-?> 
+ ?> 

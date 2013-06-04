@@ -7,17 +7,16 @@ function println($data) {
 }
 
 $arContacts = DataManager::getAllEntitiesAsObjects();
-$firephp = FirePHP::getInstance(true);
-$firephp->log($arContacts);
+
 foreach($arContacts as $objEntity) {
-  
-  
+#$firephp = FirePHP::getInstance(true);
+#$firephp->log($objEntity); 
   if(get_class($objEntity) == 'Individual') {
-    print "<h1>Individual - {$objEntity->__toString()}</h1>";
+    #print "<h1>Individual - {$objEntity->__toString()}</h1>";
+    print "<h1>Individual - {$objEntity}</h1>";
   } else {
     print "<h1>Organization - {$objEntity->__toString()}</h1>";
   }
-
   if($objEntity->getNumberOfEmails()) {
     //We have emails! Print a header
     print "<h2>Emails</h2>";
