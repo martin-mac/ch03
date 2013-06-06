@@ -1,0 +1,70 @@
+$arContacts = DataManager::getAllEntitiesAsObject
+	$res = Resource #13 
+array(
+	array('entityid'=>'1','type'>'I'),   		[select entityid,type from entity]
+	array('entityid'=>'2','type'>'O'),
+		....
+)
+obj[] = new Individual(1)
+	chiama il costruttore Entity
+$arData=DataManager::getEntityData(1)			[select * from entity]
+array('entityid'=>'1','name1'=>'Martinisi','name2'=>'Michele','type'=>'technical')
+	e poi chiama il costruttore propertyObject passandogli questo array
+	che poi mettera nel membro privato data.
+
+	Ritorna al costruttore di Entity che setta i campi di propertyTable
+$this->propertyTable['entityid'] = 'entityid';
+$this->propertyTable['id'] = 'entityid';
+$this->propertyTable['name1'] = 'sname1';
+$this->propertyTable['name2'] = 'sname2';
+$this->propertyTable['type'] = 'ctype'; 
+	
+	crea poigli oggetti Email, Address e PhoneNumber 
+	inserendoli nei rispettivi array (membri privati di Entity):
+	
+private $_emails;  (1)
+private $_addresses;
+private $_phonenumbers;
+
+	Ritorna al costruttore di Individual  eaggiunge	
+$this->propertyTable['firstname'] = 'name1';
+$this->propertyTable['lastname'] = 'name2';
+
+(1) _emails= DataManager::getEmailObjectForEntity(1)
+$sql = SELECT addressid from entityaddress WHERE entityid= '1'
+    e crea un dataset $res contenente tutti gli akey dell'email con entityid = 1
+    per ogni akey crea un oggetto Email
+while($rec = pg_fetch_assoc($res)) {
+    $objs[] = new Address($rec['addressid']);
+} 
+	Il costruttore chiama
+$arData = DataManager::getEmailData($emailid);
+$arData = array('emailid'=>'1','entityid'=>'1','smail'=>'martin.mac@libero.it','stype'=>'privato')
+	e chiama il costruttore di propertyTable 
+$this->propertyTable['emailid'] = 'emailid';
+$this->propertyTable['id'] = 'emailid';
+$this->propertyTable['entityid'] = 'entityid';
+$this->propertyTable['email'] = 'semail';
+$this->propertyTable['type'] = 'stype';
+
+E' evidente che se si prova a fare un print di un oggetto Email, verra' chimata la funzione
+function __toString() {
+  return $this->email;
+}  
+	Siccome $this-email e' inesistente viene chiamata la __get di propertyObject
+	che verifica se email e' un'indice dell'array propertyTable (l'indice e' il nome 
+	con cui possiamo chiamare il campo e il valore e' il nome del campo che possono
+	essere diversi type = ctype) e se non esiste una funzione getemail, altrimenti viene
+	invocata con call_user_func, ritorna il suo valore dall'array data:
+public function __get($propertyName) {
+  if(!array_key_exists($propertyName, $this->propertyTable)) {
+      throw new Exception("Invalid property \"$propertyName\"! ");
+  }
+  if(method_exists($this, 'get' . $propertyName)) {
+      return call_user_func(
+             array($this, 'get' . $propertyName));
+  } else {
+      return $this->data[$this->propertyTable[$propertyName]];
+  }
+}  
+  
